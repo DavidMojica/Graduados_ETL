@@ -1,0 +1,192 @@
+#Usado para planear la estructura de la base de datos y estudiar las columnas de los datasets
+
+------------Estructura general del dataset mas largo------------
+Codigo de la institucion int
+IES_PADRE int
+Institucion de educacion superior varchar
+principal o seccional var -> N1 int
+ID SECTOR IES int -> SECTOR IES
+Sector IES varchar
+IES ACREDITADA varchar(1) s/n 
+ID Caracter int -> Caracter IES
+Caracter IES varchar
+Cod. Del Depto int -> Depto
+Depto varchar
+codigo del municipio int -> municipio
+municipio varchar
+cod snies int -> programa academico
+programa academico varchar
+programa acreditado varchar(1) s/n 
+id nivel academico int -> nivel academico
+nivel academico varchar
+id nivel de formacion -> nivel de formacion
+nivel de formacion varchar
+id metodologia int -> metodologia
+metodologia varchar
+id area del conocimiento int -> area de conocimiento
+area del conocimiento varchar
+id nucleo int -> NBC
+NBC varchar
+id Cine campo amplio int -> dcca
+cca varchar
+id cce int -> cce
+cce varchar
+id ccd int -> ccd
+ccd varchar
+cod depto programa int -> depto programa
+depto programa varchar
+cod municipio programa int -> municipio programa
+municipio programa varchar
+indice_percepcion int
+id sexo int -> sexo
+sexo varchar
+semestre int 
+graduados int
+
+
+
+
+---Datos que nos quedaron después de depurar---
+Codigo de la institucion
+IES_PADRE int
+Institucion de educacion superior varchar
+principal o seccional var -> N1 int
+ID SECTOR IES int -> SECTOR IES
+Sector IES varchar
+ID Caracter int -> Caracter IES
+Caracter IES varchar
+Cod. Del Depto int -> Depto
+Depto varchar
+codigo del municipio int -> municipio
+municipio varchar
+cod snies int -> programa academico
+programa academico varchar
+id nivel academico int -> nivel academico
+nivel academico varchar
+id nivel de formacion -> nivel de formacion
+nivel de formacion varchar
+id metodologia int -> metodologia
+metodologia varchar
+id area del conocimiento int -> area de conocimiento
+area del conocimiento varchar
+id nucleo int -> NBC
+NBC varchar
+cod depto
+depto programa varchar
+cod municipio programa int -> municipio programa
+municipio programa varchar
+id sexo int -> sexo
+sexo varchar
+semestre int 
+graduados int
+
+---Temporal
+Codigo de la institucion
+IES_PADRE int
+Institucion de educacion superior varchar
+principal o seccional var -> N1 int
+ID SECTOR IES int -> SECTOR IES
+Sector IES varchar
+ID Caracter int -> Caracter IES
+Caracter IES varchar
+Cod. Del Depto int -> Depto
+Depto varchar
+codigo del municipio int -> municipio
+municipio varchar
+cod snies int -> programa academico
+programa academico varchar
+id nivel academico int -> nivel academico
+nivel academico varchar
+id nivel de formacion -> nivel de formacion
+nivel de formacion varchar
+id metodologia int -> metodologia
+metodologia varchar
+id area del conocimiento int -> area de conocimiento
+area del conocimiento varchar
+id nucleo int -> NBC
+NBC varchar
+cod depto
+depto programa varchar
+cod municipio programa int -> municipio programa
+municipio programa varchar
+id sexo int -> sexo
+sexo varchar
+semestre int 
+graduados int
+
+
+------------------------------
+tabla institucion
+    Codigo de la institucion FK tbl_instituciones
+    IES_PADRE FK tbl_instituciones int 
+    principal o seccional var -> tbl_prin_sec FK
+    ID SECTOR IES int -> tbl_sector FK
+    ID Caracter int -> tbl_caracter FK
+    Cod. Del Depto int -> tbl_departamento FK
+    codigo del municipio int -> tbl_municipio FK
+    cod snies int -> tbl_programa FK
+    id nivel academico int -> tbl_nivel_academico FK
+    id nivel de formacion -> tbl_nivel_formacion FK
+    id metodologia int -> tbl_metodologia FK
+    id area del conocimiento int -> tbl_area_conocimiento FK
+    id nucleo int -> tbl_nucleo FK
+    depto programa -> tbl_departamento fk
+    cod municipio programa int -> tbl_municipio FK
+    id sexo int -> tbl_sexo FK
+    semestre int 
+    graduados int
+
+tbl_graduados
+    graduados
+
+tbl_instituciones
+    #cod_institucion
+    desc_Institucion de educacion superior varchar
+
+tbl_prin_sec
+    #id_prin_sec
+    desc_prin_sec
+
+tbl_sector
+    #id_sector int
+    desc_Sector varchar
+
+tbl_caracter
+    #id_caracter int
+    desc_caracter varchar
+
+tbl_departamento
+    #id_departamento int
+    nombre_departamento varchar
+
+tbl_municipio
+    #id_municipio int
+    nombre_municipio varchar
+
+tbl_programa
+    #cod_snies int
+    nombre_programa varchar
+
+tbl_nivel_academico
+    #id_nivel_academico int
+    desc_nivel_academico varchar
+
+tbl_nivel_formacion
+    #id_nivel_formacion int
+    desc_nivel_formacion varchar
+
+tbl_metodologia
+    #id_metodologia int
+    desc_metodologia varchar
+
+tbl_area_conocimiento
+    #id_area_conocimiento int
+    desc_area_conocimiento varchar
+
+tbl_nucleo
+    #id_nucleo
+    desc_nucleo
+ 
+tbl_sexo
+    #id_sexo
+    desc_sexo

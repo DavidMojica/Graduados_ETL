@@ -1,0 +1,354 @@
+Como primer paso, analizamos que las culumas en todos los archivos de excel fueran simétricas. Spoiler: No lo fueron,
+tuvimos que eliminar ciertos datos que no eran de interés pra poder que todas quedaran uniformes.
+
+--2018 AG
+Codigo de la institucion
+IES_PADRE int
+Institucion de educacion superior varchar
+principal o seccional var -> N1 int
+ID SECTOR IES int -> SECTOR IES
+Sector IES varchar
+ID Caracter int -> Caracter IES
+Caracter IES varchar
+Cod. Del Depto int -> Depto
+Depto varchar
+codigo del municipio int -> municipio
+municipio varchar
+cod snies int -> programa academico
+programa academico varchar
+id nivel academico int -> nivel academico
+nivel academico varchar
+id nivel de formacion -> nivel de formacion
+nivel de formacion varchar
+id metodologia int -> metodologia
+metodologia varchar
+id area del conocimiento int -> area de conocimiento
+area del conocimiento varchar
+id nucleo int -> NBC
+NBC varchar
+cod depto
+depto programa varchar
+cod municipio programa int -> municipio programa
+municipio programa varchar
+id sexo int -> sexo
+sexo varchar
+semestre int 
+graduados int
+
+
+falta: 
+IES ACREDITADA varchar(1) s/n 
+programa acreditado varchar(1) s/n 
+id Cine campo amplio int -> dcca
+cca varchar
+id cce int -> cce
+cce varchar
+id ccd int -> ccd
+ccd varchar
+
+long: 32
+
+indice_percepcion DESPUES municipios
+
+--2019 AM
+Codigo de la institucion int
+IES_PADRE int
+Institucion de educacion superior varchar
+principal o seccional var -> N1 int
+ID SECTOR IES int -> SECTOR IES
+Sector IES varchar
+ID Caracter int -> Caracter IES
+Caracter IES varchar
+Cod. Del Depto int -> Depto
+Depto varchar
+codigo del municipio int -> municipio
+municipio varchar
+cod snies int -> programa academico
+programa academico varchar
+id nivel academico int -> nivel academico
+nivel academico varchar
+id nivel de formacion -> nivel de formacion
+nivel de formacion varchar
+id metodologia int -> metodologia
+metodologia varchar
+id area del conocimiento int -> area de conocimiento
+area del conocimiento varchar
+id nucleo int -> NBC
+NBC varchar
+id Cine campo amplio int -> dcca
+cca varchar
+id cce int -> cce
+cce varchar
+id ccd int -> ccd
+ccd varchar
+cod depto programa int -> depto programa
+depto programa varchar
+cod municipio programa int -> municipio programa
+municipio programa varchar
+indice_percepcion int
+id sexo int -> sexo
+sexo varchar
+semestre int 
+graduados int
+
+long: 39
+
+falta: 
+IES ACREDITADA varchar(1) s/n 
+programa acreditado varchar(1) s/n 
+
+indice_percepcion entre municipios
+
+
+--2020 AM
+Codigo de la institucion int
+IES_PADRE int
+Institucion de educacion superior varchar
+principal o seccional var -> N1 int
+ID SECTOR IES int -> SECTOR IES
+Sector IES varchar
+ID Caracter int -> Caracter IES
+Caracter IES varchar
+Cod. Del Depto int -> Depto
+Depto varchar
+codigo del municipio int -> municipio
+municipio varchar
+cod snies int -> programa academico
+programa academico varchar
+id nivel academico int -> nivel academico
+nivel academico varchar
+id nivel de formacion -> nivel de formacion
+nivel de formacion varchar
+id metodologia int -> metodologia
+metodologia varchar
+id area del conocimiento int -> area de conocimiento
+area del conocimiento varchar
+id nucleo int -> NBC
+NBC varchar
+id Cine campo amplio int -> dcca
+cca varchar
+id cce int -> cce
+cce varchar
+id ccd int -> ccd
+ccd varchar
+cod depto programa int -> depto programa
+depto programa varchar
+cod municipio programa int -> municipio programa
+municipio programa varchar
+indice_percepcion int
+id sexo int -> sexo
+sexo varchar
+semestre int 
+graduados int
+
+falta: 
+IES ACREDITADA varchar(1) s/n 
+programa acreditado varchar(1) s/n 
+
+indice_percepcion entre municipios
+
+
+
+2021--AO
+Codigo de la institucion int
+IES_PADRE int
+Institucion de educacion superior varchar
+principal o seccional var -> N1 int
+ID SECTOR IES int -> SECTOR IES
+Sector IES varchar
+IES ACREDITADA varchar(1) s/n 
+ID Caracter int -> Caracter IES
+Caracter IES varchar
+Cod. Del Depto int -> Depto
+Depto varchar
+codigo del municipio int -> municipio
+municipio varchar
+cod snies int -> programa academico
+programa academico varchar
+programa acreditado varchar(1) s/n 
+id nivel academico int -> nivel academico
+nivel academico varchar
+id nivel de formacion -> nivel de formacion
+nivel de formacion varchar
+id metodologia int -> metodologia
+metodologia varchar
+id area del conocimiento int -> area de conocimiento
+area del conocimiento varchar
+id nucleo int -> NBC
+NBC varchar
+id Cine campo amplio int -> dcca
+cca varchar
+id cce int -> cce
+cce varchar
+id ccd int -> ccd
+ccd varchar
+cod depto programa int -> depto programa
+depto programa varchar
+cod municipio programa int -> municipio programa
+municipio programa varchar
+indice_percepcion int
+id sexo int -> sexo
+sexo varchar
+semestre int 
+graduados int
+
+falta: nada - mas largo
+long: 41
+
+indice_percepcion entre municipios
+
+2018 AG
+2019, 2020 AM
+2021 AO
+
+
+POSIBLE DATO IMPORTANTISIMO:
+Año del registro en cuestion 15/may/23 14:45
+Confirmado por el profesor 16/may/23 07:15
+
+------------------------------------------------------------------------
+
+ELIMINAMOS:
+indice_percepcion
+IES ACREDITADA varchar(1) s/n 
+programa acreditado varchar(1) s/n 
+id Cine campo amplio int -> dcca
+cca varchar
+id cce int -> cce
+cce varchar
+id ccd int -> ccd
+ccd varchar
+
+
+Hemos eliminado dichas columnas ya que no resultan de utilidad para inferir otros datos, tampoco ofrecen información relevante para crear gráficos,
+ ni resultan de nuestro interés para llevar a cabo consultas.
+
+
+---------------------TRANSFORM--------------------------------
+Vamos a verificar si hay datos nulos o si los datos que deberían ser numéricos son en efecto, numéricos.
+
+Campos que pueden ser asumidos en caso de que sean nulos o no estén:
+
+*Codigo de la institucion: Se le puede asignar el código de la ies_padre. Si este falta tambien, se verifica el nombre de la Institucion de educacion superior 
+en la tbl_instituciones y se extrae su codigo de institucion. Si tampoco está, no se pueden subsanar esos datos ya que no podemos suponerlos.
+
+*IES_PADRE: Se le puede asignar el codigo de la institucion. Si este también falta, se verifica el nombre de la Institucion de educacion superior 
+en la tbl_instituciones y se extrae su codigo de institucion. Si tampoco está, no se pueden subsanar esos datos ya que no podemos suponerlos.
+
+*Institucion de educacion superior: Se puede asignar el nombre de la institucion por medio del codigo de la institucion. Si este falta,
+se tomará el codigo de la ies_padre. Si tambien falta, no se pueden subsanar esos datos ya que no podemos suponerlos.
+
+*Principal o seccional: Se asignará 'Principal' porque en un recuento, hay más principales que seccionales. Esto está mal, pero peor es nada.
+
+*ID Sector Ies: Se subsana a partir del sector IES. 
+|OFICIAL: 1 - PRIVADA: 2| Esto se puede hacer porque hay una cantidad pequeña de posibilidades.
+Si tampoco está, no se puede subsanar de otra forma.
+
+*Sector Ies: Se subsana a partir del ID sector IES. 
+|1: OFICIAL - 2: PRIVADA|
+Si tampoco está, no se puede subsanar de otra forma.
+
+*ID Caracter: Se subsana a partir del caracter IES en la tbl_caracter.
+|INSTITUCIÓN TÉCNICA PROFESIONAL: 1 - INSTITUCIÓN TECNOLÓGICA: 2 - INSTITUCIÓN UNIVERSITARIA/ESCUELA TECNOLÓGICA:3 - Universidad: 4| Esto se puede hacer porque hay una cantidad pequeña de posibilidades.
+Si tampoco está, no se puede subsanar de otra forma.
+
+*Caracter IES: Se subsana a partir del ID caracter IES. 
+|1: INSTITUCIÓN TÉCNICA PROFESIONAL - 2: INSTITUCIÓN TECNOLÓGICA - 3:INSTITUCIÓN UNIVERSITARIA/ESCUELA TECNOLÓGICA - 4: Universidad| Esto se puede hacer porque hay una cantidad pequeña de posibilidades.
+Si tampoco está, no se puede subsanar de otra forma.
+
+id departamento: se comprueba en la tbl_departamentos un nombre de depto que coincida y se le asigna el id correspondiente
+Si el nombre de depto tambien falta, no se puede subsanar.
+
+
+departamento_domicilio: se comprueba en la tbl_departamentos un id que coincida y se le asigna el nombre correspondiente.
+Si el id del depto tambien falta, no se puede subsanar.
+
+id_municipio: se comrpueba en tbl_municipios un nombre del municipio domicilio que coincida y se le asigna el id correspondiente.
+Si el nombre del municipio tambien falta, entonces no se puede subsanar.
+
+municipio_domicilio: se comprueba en tbl_municipios un id_municipio domicilio que coincida y se le asigna el nombre correspondiente.
+Si el id_municipio_domicilio tambien falta, entonces no se puede subsanar.
+
+Codigo SNIES del programa: En base al programa_academico se busca en la tbl_programas un programa que coincida con el nombre del programa_academico
+y se le asigna su codigo snies correspondiente.
+Si el nombre del programa_academico falta, entonces no se puede subsanar.
+
+programa_academico: En base al codigo_snies se busca en la tbl_programas un codigo snies identeco al codigo_snies y se le asigna su respectivo nombre.
+Si el codigo snies falta, no se ppuede subsanar.
+
+*id_nivel_academico: En base al nivel_academico se subsana directamente:
+|PREGRADO: 1 - POSGRADO 2| Esto se puede hacer porque hay una cantidad pequeña de posibilidades.
+Si el nivel_academico falta, no se puede subsanar.
+
+*nivel_academico: en base al id_nivel_academico se subsana directamente:
+|1: PREGRADO - 2: POSGRADO| Esto se puede hacer porque hay una cantidad pequeña de posibilidades.
+Si el id_nivel_academico falta no se puede subsanar.
+
+id_nivel_formacion: En base al nivel de formacion se busca en la tbl_nivel_formacion una descripcion que coincida y se asigna su respectivo. ID.
+Si el nombre del nivel de formacion falta no se puede subsanar.
+
+nivel_formacion: En base al id_nivel_formacion se busca en la tbl_nivel_formacion un id que coincida y se asigna su respectivo nombre.
+Si el id no está, no se puede subsanar.
+
+id_metodologia: En base a la metodologia se asignará:
+|Presencial: 1 - Virtual: 2| Esto se puede hacer porque hay una cantidad pequeña de posibilidades.
+Si la metodologia no está, asigaremos 1. No es lo más adecuado pero la metodologia presencial es más concurrida que la virtual.
+
+metodologia: En base a id_metodolgia vamos a asignar:
+|1: Presencial - 2: Virtual|
+Si el id_metodolgia no está, asignaremos 'Presencial'. No es lo más adecuado pero la metodologia presencial es más concurrida que la virtual.
+
+id_area_conocimiento: En base a la area del conocimiento. Se buscará en la tbl_area_conocimiento alguna descripcion que coincida con el area del conocimiento
+y se le asignará su respectivo id.
+Si el area del conocimiento no está, no se puede subsanar.
+
+area_conocimiento: En base al id_area_del conocimiento se buscará en tbl_area_conocimiento algún id que coincida con el id y se le asignará su respectivo nombre.
+Si el id_area_conocimiento no está no se puede subsanar.
+
+id_nucleo: A partir del nucleo se buscará en tbl_nucleo una descripcion que coincida con el nucleo y se le asigna su respectivo id.
+Si el nombre del nucleo no está no se puede subsanar.
+
+nucleo: A partir del id:nucleo se buscara en tbl_nucleo un id que coincida y se le asigna su respectivo nombre.
+Si el id del nucleo no está no se puede subsanar.
+
+id departamento_programa: A partir del depto_programa se buscará en la tbl_departamentos el nombre y posteriormente se le asignará el id correspondiente.
+Si el depto_programa falta no se puede subsanar esto.
+
+depto_programa: A partir id_depto_programa  se buscará en la tbl_departamentos el id y posteriormente se le asignará el nombre correspondiente.
+Si el id del departamento_programa falta no se puede subsanar.
+
+id_municipio_programa: A partir del municipio_programa se buscará el nombre en tbl_municipios y posteriormente se le asignará el id correspondiente.
+Si el nombre del municipio_programa falta no se puede subsanar.
+
+municipio_programa: A partir del id_municipio_programa se buscará en tbl_municipios y posteriormente se le asignará el nombre correspondiente.
+Si el id_municipio_programa falta no se puede subsanar.
+
+id_sexo: A partir del sexo se subsanará:
+|Hombre: 1 - Mujer: 2| Esto se puede hacer porque hay una cantidad pequeña de posibilidades.
+Si el sexo falta no se puede subsanar.
+
+sexo: A partir del id_sexo se subsanará:
+|1: Hombre - Mujer: 2| Esto se puede hacer porque hay una cantidad pequeña de posibilidades.
+Si el id_sexo falta no se puede subsanar.
+
+semestre: No podemos basarnos en otro dato para subsanar esto, pero si hace falta, ingresaremos un numero aleatorio entre 1 y 2.
+No es lo correcto pero de esta forma el dato no haría falta y considerando que el numero solamente puede estar entre 1 y 2, las posibilidades
+de que acertemos son del 50%, osea, altas.
+
+Graduados: No podemos generar un aleatorio, no ni tampoco subsanarlo de alguna forma.
+
+Año graduacion: Este dato lo implementamos nosotros por lo tanto estamos seguros de que no va a faltar en ninguna parte.
+
+
+
+--------NOTAS X------
+TIPOS DE tbl_instituciones en la hoja de calculo
+1
+INSTITUCIÓN TÉCNICA PROFESIONAL
+2
+INSTITUCIÓN TECNOLÓGICA
+3
+INSTITUCIÓN UNIVERSITARIA/ESCUELA TECNOLÓGICA
+4
+UNIVERSIDAD
+

@@ -1,0 +1,142 @@
+select sum(graduados) as Graduados, dep.nombre_departamento as Departamento
+from tbl_institucion as ins 
+left join tbl_departamento as dep 
+on ins.id_depto_domicilio = dep.id_departamento
+group by id_departamento
+ORDER BY SUM(graduados) DESC
+ 
+select sum(graduados) as num_Graduados_2018_a_2022, pro.nombre_programa as Programa
+from tbl_institucion as ins
+left join tbl_programa as pro
+on ins.cod_snies_programa = pro.cod_snies
+group by pro.nombre_programa
+order by sum(graduados) desc
+--8.4
+select sum(graduados) as num_Graduados_Hombres_2018_a_2022, pro.nombre_programa as Programa
+from tbl_institucion as ins
+left join tbl_programa as pro
+on ins.cod_snies_programa = pro.cod_snies
+where ins.id_sexo = 2
+group by pro.nombre_programa
+order by sum(graduados) asc
+
+--Ver todas las instituciones con sus graduados cod pb_ 3107
+select row_number() over (order by sum(graduados) desc) as puesto_ocupado, sum(graduados) as graduados, inst.nombre_institucion
+from tbl_institucion as ins
+left join tbl_instituciones as inst
+on ins.id_institucion = inst.id_institucion 
+group by inst.nombre_institucion
+order by sum(graduados) desc
+
+--solamente el pascual bravo
+SELECT *
+FROM (
+  SELECT 
+    ROW_NUMBER() OVER (ORDER BY sum(graduados) DESC) AS puesto_ocupado, 
+    sum(graduados) AS graduados, 
+    inst.nombre_institucion
+  FROM tbl_institucion AS ins
+  LEFT JOIN tbl_instituciones AS inst ON ins.id_institucion = inst.id_institucion 
+  GROUP BY inst.nombre_institucion
+  ORDER BY sum(graduados) DESC
+) AS subconsulta
+WHERE subconsulta.nombre_institucion = 'INSTITUCION UNIVERSITARIA PASCUAL BRAVO'
+LIMIT 1;
+
+
+--9.1 Histograma de graduados por año
+SELECT "public"."tbl_institucion"."año_registro" AS "año_registro", SUM("public"."tbl_institucion"."graduados") AS "sum"
+FROM "public"."tbl_institucion"
+GROUP BY "public"."tbl_institucion"."año_registro"
+ORDER BY "public"."tbl_institucion"."año_registro" ASC
+
+--9.2 Gráfico de tortas por sexo
+SELECT "Tbl Sexo - ID Sexo"."desc_sexo" AS "Tbl Sexo - ID Sexo__desc_sexo", SUM("public"."tbl_institucion"."graduados") AS "sum"
+FROM "public"."tbl_institucion"
+LEFT JOIN "public"."tbl_sexo" AS "Tbl Sexo - ID Sexo" ON "public"."tbl_institucion"."id_sexo" = "Tbl Sexo - ID Sexo"."id_sexo"
+GROUP BY "Tbl Sexo - ID Sexo"."desc_sexo"
+ORDER BY "Tbl Sexo - ID Sexo"."desc_sexo" ASC
+
+--9.3
+SELECT "Tbl Sector - ID Sector"."desc_sector" AS "Tbl Sector - ID Sector__desc_sector", count(distinct "public"."tbl_institucion"."id_institucion") AS "count"
+FROM "public"."tbl_institucion"
+LEFT JOIN "public"."tbl_sector" AS "Tbl Sector - ID Sector" ON "public"."tbl_institucion"."id_sector" = "Tbl Sector - ID Sector"."id_sector"
+GROUP BY "Tbl Sector - ID Sector"."desc_sector"
+ORDER BY "Tbl Sector - ID Sector"."desc_sector" ASC
+  
+--9.4 Gráfico de tortas por nivel académico: Pregrado y Postgrado
+-- select * from tbl_institucion
+-- select count(distinct cod_snies_programa), id_nivel_academico from tbl_institucion
+-- group by id_nivel_academico
+
+SELECT "Tbl Nivel Academico - ID Nivel Academico"."desc_nivel_academico" AS "Tbl Nivel Academico - ID Nivel Academico__desc_nive_898ded9a", count(distinct "public"."tbl_institucion"."cod_snies_programa") AS "count"
+FROM "public"."tbl_institucion"
+LEFT JOIN "public"."tbl_nivel_academico" AS "Tbl Nivel Academico - ID Nivel Academico" ON "public"."tbl_institucion"."id_nivel_academico" = "Tbl Nivel Academico - ID Nivel Academico"."id_nivel_academico"
+GROUP BY "Tbl Nivel Academico - ID Nivel Academico"."desc_nivel_academico"
+ORDER BY "Tbl Nivel Academico - ID Nivel Academico"."desc_nivel_academico" ASC
+
+--9.5 Histograma de graduados por departamento
+SELECT "Tbl Departamento - ID Depto Domicilio"."nombre_departamento" AS "Tbl Departamento - ID Depto Domicilio__nombre_departamento", SUM("public"."tbl_institucion"."graduados") AS "sum"
+FROM "public"."tbl_institucion"
+LEFT JOIN "public"."tbl_departamento" AS "Tbl Departamento - ID Depto Domicilio" ON "public"."tbl_institucion"."id_depto_domicilio" = "Tbl Departamento - ID Depto Domicilio"."id_departamento"
+GROUP BY "Tbl Departamento - ID Depto Domicilio"."nombre_departamento"
+ORDER BY "sum" DESC, "Tbl Departamento - ID Depto Domicilio"."nombre_departamento" ASC
+
+--9.6 Histograma de graduados por departamento y sexo (apilado)
+SELECT "Tbl Departamento - ID Depto Domicilio"."nombre_departamento" AS "Tbl Departamento - ID Depto Domicilio__nombre_departamento", "Tbl Sexo - ID Sexo"."desc_sexo" AS "Tbl Sexo - ID Sexo__desc_sexo", SUM("public"."tbl_institucion"."graduados") AS "sum"
+FROM "public"."tbl_institucion"
+LEFT JOIN "public"."tbl_departamento" AS "Tbl Departamento - ID Depto Domicilio" ON "public"."tbl_institucion"."id_depto_domicilio" = "Tbl Departamento - ID Depto Domicilio"."id_departamento" LEFT JOIN "public"."tbl_sexo" AS "Tbl Sexo - ID Sexo" ON "public"."tbl_institucion"."id_sexo" = "Tbl Sexo - ID Sexo"."id_sexo"
+GROUP BY "Tbl Departamento - ID Depto Domicilio"."nombre_departamento", "Tbl Sexo - ID Sexo"."desc_sexo"
+ORDER BY "Tbl Departamento - ID Depto Domicilio"."nombre_departamento" ASC, "Tbl Sexo - ID Sexo"."desc_sexo" ASC
+
+--9.7 Diagrama de Pareto por Universidad
+SELECT * FROM (
+  SELECT
+    DISTINCT inst.nombre_institucion,
+    SUM(SUM(graduados)) OVER (ORDER BY SUM(graduados) DESC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS Graduados_Totales,
+    SUM(graduados) AS graduados_por_universidad
+  FROM tbl_institucion as tbl
+  LEFT JOIN tbl_instituciones as inst ON tbl.id_institucion = inst.id_institucion
+  GROUP BY inst.nombre_institucion
+  ORDER BY SUM(graduados) DESC
+) AS subconsulta
+ORDER BY
+  graduados_por_universidad DESC, Graduados_Totales ASC
+limit 15;
+
+--9.8 Diagrama de Pareto por programa_academico
+SELECT * FROM (
+  SELECT
+    DISTINCT prog.nombre_programa,
+    SUM(SUM(graduados)) OVER (ORDER BY SUM(graduados) DESC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS Graduados_Totales_Colombia,
+    SUM(graduados) AS graduados_por_programa_academico
+  FROM tbl_institucion
+  LEFT JOIN tbl_programa AS prog ON cod_snies_programa = prog.cod_snies
+  GROUP BY prog.nombre_programa
+  ORDER BY SUM(graduados) DESC
+) AS subconsulta
+ORDER BY
+  graduados_por_programa_academico DESC, Graduados_Totales_Colombia ASC
+limit 15;
+
+
+--9.9 Diagrama de Pareto de los programas académicos de pregrado del Pascual Bravo
+
+SELECT * FROM (
+  SELECT
+    DISTINCT prog.nombre_programa,
+    SUM(SUM(graduados)) OVER (ORDER BY SUM(graduados) DESC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS Graduados_Totales_Pascual_Bravo,
+    SUM(graduados) AS graduados_por_programa_del_Pascual_Bravo
+  FROM tbl_institucion
+  LEFT JOIN tbl_programa AS prog ON cod_snies_programa = prog.cod_snies
+  WHERE id_institucion = 3107 --Codigo del pascual bravo
+  AND id_nivel_academico = 1
+  GROUP BY prog.nombre_programa
+  ORDER BY SUM(graduados) DESC
+) AS subconsulta
+ORDER BY
+  graduados_por_programa_del_Pascual_Bravo DESC, Graduados_Totales_Pascual_Bravo ASC;
+
+--TAMAÑO DE LA BASE DE DATOS CON TEMPORAL: 91MB
+SELECT pg_size_pretty(pg_database_size('bigdatap')) AS tamaño_de_la_base_de_datos;
+
